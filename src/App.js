@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 function App() {
-
   const BASE_URL = "https://scamshield-v88k.onrender.com";
 
   const [text, setText] = useState("");
@@ -14,43 +13,48 @@ function App() {
   const [callType, setCallType] = useState("scam");
   const [callNotes, setCallNotes] = useState("");
 
+  // ✅ Check number (Caller ID style)
   const checkNumber = async () => {
-  const res = await fetch(`${BASE_URL}/calls/check/${callNumber}`);
-  const data = await res.json();
-  alert(data.message);
-};
+    if (!callNumber) {
+      alert("Enter a number first");
+      return;
+    }
 
-  // Scan message
+    try {
+      const res = await fetch(`${BASE_URL}/calls/check/${callNumber}`);
+      const data = await res.json();
+      alert(data.message);
+    } catch (err) {
+      alert("Failed to check number");
+    }
+  };
 
+  // ✅ Scan message
   const checkScam = async () => {
-  if (!text) {
-    setResult("Please enter a message.");
-    return;
-  }
+    if (!text) {
+      setResult("Please enter a message.");
+      return;
+    }
 
-  try {
-    setResult("Checking...");
-    
-    const response = await fetch(`${BASE_URL}/check`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ message: text }),
-    });
+    try {
+      setResult("Checking...");
 
-    const data = await response.json();
+      const response = await fetch(`${BASE_URL}/check`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: text }),
+      });
 
-    console.log("API Response:", data); // 👈 debug
+      const data = await response.json();
+      setResult(data.result);
+    } catch (error) {
+      setResult("Server error. Please try again.");
+    }
+  };
 
-    setResult(data.result);
-  } catch (error) {
-    console.error("Error:", error);
-    setResult("Server error. Please try again.");
-  }
-};
-
-  // Fetch message history
+  // ✅ Fetch message history
   const getHistory = async () => {
     setLoading(true);
     try {
@@ -64,9 +68,13 @@ function App() {
     }
   };
 
-  // Add new scam call
+  // ✅ Add new call
   const addCall = async () => {
-    if (!callNumber) return alert("Enter number");
+    if (!callNumber) {
+      alert("Enter number");
+      return;
+    }
+
     try {
       await fetch(`${BASE_URL}/calls/add`, {
         method: "POST",
@@ -77,6 +85,7 @@ function App() {
           notes: callNotes,
         }),
       });
+
       setCallNumber("");
       setCallNotes("");
       fetchCalls();
@@ -85,7 +94,7 @@ function App() {
     }
   };
 
-  // Fetch calls history
+  // ✅ Fetch call history
   const fetchCalls = async () => {
     try {
       const res = await fetch(`${BASE_URL}/calls/history`);
@@ -101,6 +110,7 @@ function App() {
       <div className="bg-white p-8 rounded-2xl shadow-2xl w-96 text-center">
         <h1 className="text-2xl font-bold mb-4">ScamShield AI 🛡️</h1>
 
+        {/* Message Scanner */}
         <textarea
           className="w-full p-3 border rounded-lg mb-4"
           rows="4"
@@ -121,12 +131,6 @@ function App() {
           className="bg-blue-600 text-white px-4 py-2 rounded-lg m-2"
         >
           Show History
-        </button>  
-        <button
-          onClick={checkNumber}
-          className="bg-green-600 text-white px-2 py-1 rounded w-full mt-2"
-        >
-          Check Number
         </button>
 
         <p className="mt-4 font-semibold">{result}</p>
@@ -157,6 +161,7 @@ function App() {
           )}
         </div>
 
+        {/* Scam Call Section */}
         <div className="mt-6 text-left p-4 border rounded-lg">
           <h2 className="font-bold mb-2">Scam Call Demo</h2>
 
@@ -190,6 +195,13 @@ function App() {
             className="bg-red-600 text-white px-2 py-1 rounded w-full"
           >
             Add Call
+          </button>
+
+          <button
+            onClick={checkNumber}
+            className="bg-green-600 text-white px-2 py-1 rounded w-full mt-2"
+          >
+            Check Number
           </button>
 
           <div className="mt-4 max-h-40 overflow-y-auto border-t pt-2">
