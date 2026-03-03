@@ -14,6 +14,12 @@ function App() {
   const [callType, setCallType] = useState("scam");
   const [callNotes, setCallNotes] = useState("");
 
+  const checkNumber = async () => {
+  const res = await fetch(`${BASE_URL}/calls/check/${callNumber}`);
+  const data = await res.json();
+  alert(data.message);
+};
+
   // Scan message
 
   const checkScam = async () => {
@@ -115,6 +121,12 @@ function App() {
           className="bg-blue-600 text-white px-4 py-2 rounded-lg m-2"
         >
           Show History
+        </button>  
+        <button
+          onClick={checkNumber}
+          className="bg-green-600 text-white px-2 py-1 rounded w-full mt-2"
+        >
+          Check Number
         </button>
 
         <p className="mt-4 font-semibold">{result}</p>
