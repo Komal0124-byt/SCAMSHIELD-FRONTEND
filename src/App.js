@@ -1,4 +1,4 @@
-mport React, { useState } from "react";
+import React, { useState } from "react";
 
 function App() {
   const BASE_URL = "https://scamshield-v88k.onrender.com";
@@ -14,7 +14,27 @@ function App() {
   const [callNotes, setCallNotes] = useState("");
 
   // Scan message
+  // const checkScam = async () => {
+  //   const response = await fetch(`${BASE_URL}/check`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ message: text }),
+  //   });
+
+  //   const data = await response.json();
+  //   setResult(data.result);
+  // };
   const checkScam = async () => {
+  if (!text) {
+    setResult("Please enter a message.");
+    return;
+  }
+
+  try {
+    setResult("Checking...");
+    
     const response = await fetch(`${BASE_URL}/check`, {
       method: "POST",
       headers: {
@@ -24,8 +44,15 @@ function App() {
     });
 
     const data = await response.json();
+
+    console.log("API Response:", data); // 👈 debug
+
     setResult(data.result);
-  };
+  } catch (error) {
+    console.error("Error:", error);
+    setResult("Server error. Please try again.");
+  }
+};
 
   // Fetch message history
   const getHistory = async () => {
