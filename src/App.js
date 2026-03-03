@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+mport React, { useState } from "react";
 
 function App() {
+  const BASE_URL = "https://scamshield-v88k.onrender.com";
+
   const [text, setText] = useState("");
   const [result, setResult] = useState("");
   const [history, setHistory] = useState([]);
-  const [loading, setLoading] = useState(false); // spinner state
+  const [loading, setLoading] = useState(false);
 
   const [calls, setCalls] = useState([]);
   const [callNumber, setCallNumber] = useState("");
@@ -13,7 +15,7 @@ function App() {
 
   // Scan message
   const checkScam = async () => {
-    const response = await fetch("http://localhost:5000/check", {
+    const response = await fetch(`${BASE_URL}/check`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +31,7 @@ function App() {
   const getHistory = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/history");
+      const res = await fetch(`${BASE_URL}/history`);
       const data = await res.json();
       setHistory(data);
     } catch (error) {
@@ -43,10 +45,14 @@ function App() {
   const addCall = async () => {
     if (!callNumber) return alert("Enter number");
     try {
-      await fetch("http://localhost:5000/calls/add", {
+      await fetch(`${BASE_URL}/calls/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ number: callNumber, type: callType, notes: callNotes }),
+        body: JSON.stringify({
+          number: callNumber,
+          type: callType,
+          notes: callNotes,
+        }),
       });
       setCallNumber("");
       setCallNotes("");
@@ -59,7 +65,7 @@ function App() {
   // Fetch calls history
   const fetchCalls = async () => {
     try {
-      const res = await fetch("http://localhost:5000/calls/history");
+      const res = await fetch(`${BASE_URL}/calls/history`);
       const data = await res.json();
       setCalls(data);
     } catch (err) {
@@ -72,9 +78,8 @@ function App() {
       <div className="bg-white p-8 rounded-2xl shadow-2xl w-96 text-center">
         <h1 className="text-2xl font-bold mb-4">ScamShield AI 🛡️</h1>
 
-        {/* Message Scanner */}
         <textarea
-          className="w-full p-3 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-purple-400"
+          className="w-full p-3 border rounded-lg mb-4"
           rows="4"
           placeholder="Paste suspicious message here..."
           value={text}
@@ -83,21 +88,20 @@ function App() {
 
         <button
           onClick={checkScam}
-          className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition m-2"
+          className="bg-purple-600 text-white px-4 py-2 rounded-lg m-2"
         >
           Check Scam
         </button>
 
         <button
           onClick={getHistory}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition m-2"
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg m-2"
         >
           Show History
         </button>
 
         <p className="mt-4 font-semibold">{result}</p>
 
-        {/* Message History */}
         <div className="mt-4 text-left max-h-40 overflow-y-auto border-t pt-2">
           {loading ? (
             <div className="flex justify-center items-center py-4">
@@ -124,7 +128,6 @@ function App() {
           )}
         </div>
 
-        {/* Scam Calls Section */}
         <div className="mt-6 text-left p-4 border rounded-lg">
           <h2 className="font-bold mb-2">Scam Call Demo</h2>
 
@@ -133,13 +136,13 @@ function App() {
             placeholder="Number"
             value={callNumber}
             onChange={(e) => setCallNumber(e.target.value)}
-            className="border p-1 rounded mr-2 mb-2 w-full"
+            className="border p-1 rounded mb-2 w-full"
           />
 
           <select
             value={callType}
             onChange={(e) => setCallType(e.target.value)}
-            className="border p-1 rounded mr-2 mb-2 w-full"
+            className="border p-1 rounded mb-2 w-full"
           >
             <option value="scam">Scam</option>
             <option value="safe">Safe</option>
@@ -150,7 +153,7 @@ function App() {
             placeholder="Notes"
             value={callNotes}
             onChange={(e) => setCallNotes(e.target.value)}
-            className="border p-1 rounded mr-2 mb-2 w-full"
+            className="border p-1 rounded mb-2 w-full"
           />
 
           <button
@@ -176,4 +179,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;i
