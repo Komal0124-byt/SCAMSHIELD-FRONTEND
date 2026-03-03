@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 function App() {
+
   const BASE_URL = "https://scamshield-v88k.onrender.com";
 
   const [text, setText] = useState("");
@@ -14,18 +15,7 @@ function App() {
   const [callNotes, setCallNotes] = useState("");
 
   // Scan message
-  // const checkScam = async () => {
-  //   const response = await fetch(`${BASE_URL}/check`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ message: text }),
-  //   });
 
-  //   const data = await response.json();
-  //   setResult(data.result);
-  // };
   const checkScam = async () => {
   if (!text) {
     setResult("Please enter a message.");
