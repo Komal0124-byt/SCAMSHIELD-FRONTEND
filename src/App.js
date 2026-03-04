@@ -11,7 +11,40 @@ function App() {
   const [calls, setCalls] = useState([]);
   const [callNumber, setCallNumber] = useState("");
   const [callType, setCallType] = useState("scam");
-  const [callNotes, setCallNotes] = useState("");
+  const [callNotes, setCallNotes] = useState(""); 
+
+  const checkScam = async () => {
+  const response = await fetch("https://your-backend-url/check", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message })
+  });
+
+  const data = await response.json();
+  alert(data.result);
+};
+
+const reportCall = async () => {
+  const response = await fetch("https://your-backend-url/report-call", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ phone })
+  });
+
+  const data = await response.json();
+  alert(data.result);
+};
+
+const checkNumber = async () => {
+  const response = await fetch("https://your-backend-url/check-number", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ phone })
+  });
+
+  const data = await response.json();
+  alert(data.result);
+};
 
   // ✅ Check number (Caller ID style)
   const checkNumber = async () => {
