@@ -13,17 +13,6 @@ function App() {
   const [callType, setCallType] = useState("scam");
   const [callNotes, setCallNotes] = useState(""); 
 
-  const checkScam = async () => {
-  const response = await fetch("https://your-backend-url/check", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message })
-  });
-
-  const data = await response.json();
-  alert(data.result);
-};
-
 const reportCall = async () => {
   const response = await fetch("https://your-backend-url/report-call", {
     method: "POST",
@@ -35,18 +24,7 @@ const reportCall = async () => {
   alert(data.result);
 };
 
-const checkNumber = async () => {
-  const response = await fetch("https://your-backend-url/check-number", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ phone })
-  });
-
-  const data = await response.json();
-  alert(data.result);
-};
-
-  // ✅ Check number (Caller ID style)
+  //  Check number (Caller ID style)
   const checkNumber = async () => {
     if (!callNumber) {
       alert("Enter a number first");
@@ -62,7 +40,7 @@ const checkNumber = async () => {
     }
   };
 
-  // ✅ Scan message
+  //  Scan message
   const checkScam = async () => {
     if (!text) {
       setResult("Please enter a message.");
@@ -87,7 +65,7 @@ const checkNumber = async () => {
     }
   };
 
-  // ✅ Fetch message history
+  //  Fetch message history
   const getHistory = async () => {
     setLoading(true);
     try {
@@ -101,7 +79,7 @@ const checkNumber = async () => {
     }
   };
 
-  // ✅ Add new call
+  //  Add new call
   const addCall = async () => {
     if (!callNumber) {
       alert("Enter number");
@@ -127,7 +105,7 @@ const checkNumber = async () => {
     }
   };
 
-  // ✅ Fetch call history
+  // Fetch call history
   const fetchCalls = async () => {
     try {
       const res = await fetch(`${BASE_URL}/calls/history`);
