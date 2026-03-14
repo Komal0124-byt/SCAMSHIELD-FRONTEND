@@ -13,11 +13,21 @@ function App() {
   const [callType, setCallType] = useState("scam");
   const [callNotes, setCallNotes] = useState(""); 
 
+// const reportCall = async () => {
+//   const response = await fetch("https://your-backend-url/report-call", {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({ phone })
+//   });
+
+//   const data = await response.json();
+//   alert(data.result);
+// };
 const reportCall = async () => {
-  const response = await fetch("https://your-backend-url/report-call", {
+  const response = await fetch(`${BASE_URL}/report-call`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ phone })
+    body: JSON.stringify({ phone: callNumber })
   });
 
   const data = await response.json();
