@@ -51,7 +51,6 @@
 h1 {
   margin-bottom: 20px;
 }
-
 textarea {
   width: 350px;
   height: 120px;
@@ -59,7 +58,15 @@ textarea {
   border-radius: 10px;
   border: none;
   outline: none;
+
+  background-color: #1e1e1e;
+  color: white;
 }
+textarea::placeholder {
+  color: #aaa;
+}
+
+
 
 button {
   display: block;
